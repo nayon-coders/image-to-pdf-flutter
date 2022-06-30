@@ -43,6 +43,8 @@ dependencies:
   mailer: ^5.1.1
   cool_alert: ^1.1.0
   flutter_native_image: ^0.0.6+1
+  google_sign_in: ^5.3.3
+  image_cropper: ^2.0.3
 
 
 

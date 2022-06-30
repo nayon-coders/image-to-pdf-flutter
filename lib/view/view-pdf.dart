@@ -1,6 +1,7 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -53,6 +54,8 @@ class _ViewPdfState extends State<ViewPdf> {
     });
   }
 
+  bool _isUpload = false;
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -74,7 +77,12 @@ class _ViewPdfState extends State<ViewPdf> {
           )
         ],
       ),
-      body: Center(
+      body: _isUpload ? Center(
+        child: CircularProgressIndicator(
+          color: Colors.green,
+          strokeWidth: 4,
+        ),
+      ): Center(
         child: _isSendedMail && widget.image != null  ?  Container(
           width: 200,
           padding: EdgeInsets.all(20),
@@ -90,43 +98,43 @@ class _ViewPdfState extends State<ViewPdf> {
               )
             ],
           ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                  strokeWidth: 5,
-                  color: appColors.mainColors,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                strokeWidth: 5,
+                color: appColors.mainColors,
+              ),
+              SizedBox(width: 5,),
+              Text("Email Sending...",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
-                SizedBox(width: 5,),
-                Text("Email Sending...",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          )
-        : Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: ListView.builder(
+              ),
+            ],
+          ),
+        )
+            : Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
               itemCount: widget.image.length,
               itemBuilder: (context, index){
                 print(widget.image);
                 return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 400,
-                  margin: EdgeInsets.all(10),
-                  child: Stack(
+                    width: MediaQuery.of(context).size.width,
+                    height: 400,
+                    margin: EdgeInsets.all(10),
+                    child: Stack(
                       children:[
                         Image.file(widget.image[index],),
                         Positioned(
                           right: 0,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: appColors.white,
-                              borderRadius: BorderRadius.circular(100)
+                                color: appColors.white,
+                                borderRadius: BorderRadius.circular(100)
                             ),
                             child: IconButton(
                                 onPressed: (){
@@ -144,13 +152,14 @@ class _ViewPdfState extends State<ViewPdf> {
                             ),
                           ),
                         ),
-                  ],
-                  )
+                      ],
+                    )
                 );
               }
+          ),
         ),
-            ),
       ),
+
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(bottom: 10, top: 10),
         child: Row(
@@ -208,7 +217,11 @@ class _ViewPdfState extends State<ViewPdf> {
       pdf.addPage(pw.Page(
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context){
-            pdfFile = pw.Center(child: pw.Image(image));
+            pdfFile = pw.Center(
+              heightFactor: 816,
+              widthFactor: 1056,
+              child: pw.Image(image,width: 816, height: 1056),
+            );
             //print(pdfFile);
             return pdfFile;
           }
@@ -232,6 +245,7 @@ class _ViewPdfState extends State<ViewPdf> {
 
   _sendEmail(path)async {
     setState((){
+      _isUpload = true;
       _isSendedMail = true;
     });
     String username = 'nami918772@gmail.com';
@@ -250,12 +264,13 @@ class _ViewPdfState extends State<ViewPdf> {
       final sendReport = await send(message, smtpServer);
       print('Message sent: $sendReport');
       setState((){
+        _isUpload = false;
         _isSendedMail = false;
       });
       CoolAlert.show(
-        context: context,
-        type: CoolAlertType.success,
-        text: "Your PDF save and send by mail successful. ",
+          context: context,
+          type: CoolAlertType.success,
+          text: "Your PDF save and send by mail successful. ",
           onConfirmBtnTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
           }
@@ -267,16 +282,43 @@ class _ViewPdfState extends State<ViewPdf> {
       }
     }
     setState((){
+      _isUpload = false;
       _isSendedMail = false;
     });
   }
 
 
   selectMoreImages(type)async{
+    setState((){
+      _isUpload = true;
+    });
 
     final pickerFile = await picker.getImage(source: type);
     if(pickerFile != null){
-      File imagePath = File(pickerFile.path);
+
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickerFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper Image',
+              toolbarColor: Colors.green,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper Image',
+          ),
+        ],
+      );
+
+      File imagePath = File(croppedFile!.path);
       File compressImage = await compress(ImagePathTOComprose: imagePath);
       setState((){
         widget.image.add(compressImage);
@@ -285,6 +327,10 @@ class _ViewPdfState extends State<ViewPdf> {
     }else{
       ShowToast("No Image Selected");
     }
+    setState((){
+      _isUpload = false;
+    });
+
 
   }
 

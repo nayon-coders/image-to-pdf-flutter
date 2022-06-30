@@ -23,6 +23,11 @@ class _InfoScreenState extends State<InfoScreen> {
   final _Cemail = TextEditingController();
   final _Remail = TextEditingController();
 
+  @override
+  void initState(){
+    super.initState();
+    _Cemail.text = "nami@gmail.com";
+  }
 
 
   @override
@@ -71,154 +76,155 @@ class _InfoScreenState extends State<InfoScreen> {
                     padding: EdgeInsets.only(left: 20, right: 20),
                     child: Form(
                       key: _key,
-                        child: Column(
-                            children: [
-                              TextFormField(
-                                controller: _Cname,
-                                validator: (value) {
-                                  if(value!.isEmpty){
-                                    return "Company Name Field is empty";
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Company Name",
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,color:appColors.secondryColor
-                                    ),
-                                  ),
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder:  InputBorder.none,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                                  filled: true,
-                                  fillColor: appColors.white,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _Cname,
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return "Company Name Field is empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Company Name",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0,
                                 ),
                               ),
-                              const SizedBox(height: 10,),
-                              TextFormField(
-                                controller: _Dname,
-                                validator: (value) {
-                                  if(value!.isEmpty){
-                                    return "Driver Name Field is empty";
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Driver name",
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 0,
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,color:appColors.secondryColor
-                                    ),
-                                  ),
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder:  InputBorder.none,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                                  filled: true,
-                                  fillColor: appColors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,color:appColors.secondryColor
                                 ),
                               ),
-                              const SizedBox(height: 10,),
-                              TextFormField(
-                                controller: _Cemail,
-                                validator: (value) {
-                                  if(value!.isEmpty){
-                                    return "Company Email Field is empty";
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Company Email",
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 0,
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,color:appColors.secondryColor
-                                    ),
-                                  ),
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder:  InputBorder.none,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                                  filled: true,
-                                  fillColor: appColors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 10,),
-                              TextFormField(
-                                controller: _Remail,
-                                validator: (value) {
-                                  if(value!.isEmpty){
-                                    return "Receiver email Field is empty";
-                                  }
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "Receiver email",
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 0,
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1,color:appColors.secondryColor
-                                    ),
-                                  ),
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder:  InputBorder.none,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                                  filled: true,
-                                  fillColor: appColors.white,
-                                ),
-                              ),
-
-                              const SizedBox(height: 30,),
-
-                              GestureDetector(
-                                onTap: (){
-                                  _saveInfo();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
-                                  decoration: BoxDecoration(
-                                    color: appColors.secondryColor,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: const Text("Let’s Go",
-                                    style: TextStyle(
-                                      color: appColors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder:  InputBorder.none,
+                              contentPadding:
+                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                              filled: true,
+                              fillColor: appColors.white,
+                            ),
                           ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: _Dname,
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return "Driver Name Field is empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Driver name",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,color:appColors.secondryColor
+                                ),
+                              ),
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder:  InputBorder.none,
+                              contentPadding:
+                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                              filled: true,
+                              fillColor: appColors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            readOnly: true,
+                            controller: _Cemail,
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return "Company Email Field is empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Company Email",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,color:appColors.secondryColor
+                                ),
+                              ),
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder:  InputBorder.none,
+                              contentPadding:
+                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                              filled: true,
+                              fillColor: appColors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10,),
+                          TextFormField(
+                            controller: _Remail,
+                            validator: (value) {
+                              if(value!.isEmpty){
+                                return "Receiver email Field is empty";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Receiver email",
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,color:appColors.secondryColor
+                                ),
+                              ),
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder:  InputBorder.none,
+                              contentPadding:
+                              EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                              filled: true,
+                              fillColor: appColors.white,
+                            ),
+                          ),
+
+                          const SizedBox(height: 30,),
+
+                          GestureDetector(
+                            onTap: (){
+                              _saveInfo();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+                              decoration: BoxDecoration(
+                                color: appColors.secondryColor,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: const Text("Let’s Go",
+                                style: TextStyle(
+                                  color: appColors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
 

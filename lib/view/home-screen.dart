@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:project/show-toast.dart';
 import 'package:project/utility/colors.dart';
 import 'package:project/view/profile.dart';
@@ -25,7 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final picker = ImagePicker();
   List <File> _image = [];
 
+  File? _selectedFile;
 
+
+  bool _isUpload = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(0xFFEFF7FF),
-      body: Column(
+      body: _isUpload ? Center(
+        child: CircularProgressIndicator(
+          color: Colors.green,
+          strokeWidth: 4,
+        ),
+      ):Column(
         children: [
           Stack(
             clipBehavior: Clip.none,
@@ -42,14 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 width: width,
                 height: height/2,
-                color: Colors.black,
+                color: Color(0xFF026906),
                 child: Column(
                   children: [
                     //SizedBox(height: 20,),
                     //Image.asset("assets/truck90.jpg", height: 70, width: 70, fit:  BoxFit.contain,),
 
-                    SizedBox(height: 70,),
-                    Image.asset("assets/pdf.png", height: 200, width: 200, fit: BoxFit.cover,),
+                    SizedBox(height: 50,),
+                    Image.asset("assets/1.png", height: 200, width: 600, fit: BoxFit.cover,),
                     SizedBox(
                       width: 200,
                       child: Text(
@@ -78,9 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey,
-                          blurRadius: 20.0,
+                          blurRadius: 10.0,
                           spreadRadius: 1.0,
-                          offset: Offset( 0.0, 10.0,),
+                          offset: Offset( 0.0, 5.0,),
                         )
                       ],
                       gradient: LinearGradient(
@@ -113,6 +123,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              Positioned(
+                top: 35,
+                  right: 20,
+                  child: GestureDetector(
+                    onTap: (){
+                      exit(0);
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: appColors.white
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.green,
+                        size: 20,
+                      ),
+                    ),
+                  )
+              )
             ],
           ),
 
@@ -159,7 +191,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-          )
+          ),
+
+          SizedBox(height: 30,),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: width/1.5,
+              child: Column(
+                children: const [
+                  Text("For Transport Accounting & Bookkeeping Visit us @",
+                   textAlign:  TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+
+                  Text("www.truck90.com",
+                    textAlign:  TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20,),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -178,17 +239,52 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //TODO: Gallery Image picker
   imagePicker(pickImageType)async{
-      final pickerFile = await picker.getImage(source: pickImageType);
-      if(pickerFile != null){
-        File imagePath = File(pickerFile.path);
-        File compressImage = await compress(ImagePathTOComprose: imagePath);
-        setState((){
-          _image.add(compressImage);
-        });
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewPdf(image: _image)));
-      }else{
-        ShowToast("No Image Selected");
-      }
+    setState((){
+      _isUpload = true;
+    });
+    final pickerFile = await picker.getImage(source: pickImageType);
+    if(pickerFile != null){
+
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+       sourcePath: pickerFile.path,
+       aspectRatioPresets: [
+         CropAspectRatioPreset.square,
+         CropAspectRatioPreset.ratio3x2,
+         CropAspectRatioPreset.original,
+         CropAspectRatioPreset.ratio4x3,
+         CropAspectRatioPreset.ratio16x9
+       ],
+       uiSettings: [
+         AndroidUiSettings(
+             toolbarTitle: 'Cropper',
+             toolbarColor: Colors.green,
+             toolbarWidgetColor: Colors.white,
+             initAspectRatio: CropAspectRatioPreset.original,
+             lockAspectRatio: false),
+         IOSUiSettings(
+           title: 'Cropper',
+         ),
+       ],
+     );
+      File imagePath = File(croppedFile!.path);
+
+      File compressImage = await compress(ImagePathTOComprose:imagePath);
+      setState((){
+        _image.add(compressImage);
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewPdf(image: _image)));
+
+
+
+
+    }else{
+      ShowToast("No Image Selected");
+    }
+    setState((){
+      _isUpload = true;
+    });
+
+
   }
   Future<File> compress({required File ImagePathTOComprose, quality: 100, percentage: 10})async{
     var path = FlutterNativeImage.compressImage(
@@ -199,6 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return path;
 
   }
+
 
 
 }

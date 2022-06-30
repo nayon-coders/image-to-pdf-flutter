@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "486756960204",
+    "project_id": "imagetopdf-6588c",
+    "storage_bucket": "imagetopdf-6588c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486756960204:android:ce14731f6e4e9814217f69",
+        "android_client_info": {
+          "package_name": "com.nayon.imgetopdf.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486756960204-49vep0hgdccbn5kiiarcsjf2o94pdnak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCR1VtIKBGnhZQz7C98ldqd-BO87P5ALk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486756960204-49vep0hgdccbn5kiiarcsjf2o94pdnak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

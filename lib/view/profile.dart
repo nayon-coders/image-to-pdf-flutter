@@ -68,6 +68,10 @@ class _ProfileState extends State<Profile> {
             key: _key,
             child: ListView(
               children: [
+                Text("Company Name: ", style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),),
                 TextFormField(
                   controller: _Cname,
                   validator: (value) {
@@ -102,7 +106,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const SizedBox(height: 10,),
+                Text("Driver Name: ", style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),),
                 TextFormField(
+
                   controller: _Dname,
                   validator: (value) {
                     if(value!.isEmpty){
@@ -137,7 +146,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const SizedBox(height: 10,),
+                Text("Company Email: ", style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),),
                 TextFormField(
+                  readOnly: true,
                   controller: _Cemail,
                   validator: (value) {
                     if(value!.isEmpty){
@@ -172,7 +186,12 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const SizedBox(height: 10,),
+                Text("Receiver Email: ", style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),),
                 TextFormField(
+
                   controller: _Remail,
                   validator: (value) {
                     if(value!.isEmpty){
