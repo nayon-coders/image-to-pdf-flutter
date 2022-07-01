@@ -51,7 +51,7 @@ class _ProfileState extends State<Profile> {
         child: Container(
           margin: EdgeInsets.only(top: 50),
           padding: EdgeInsets.all(20),
-          height: MediaQuery.of(context).size.height/2,
+          height: 400,
           decoration: BoxDecoration(
             color: appColors.white,
             borderRadius: BorderRadius.circular(30),

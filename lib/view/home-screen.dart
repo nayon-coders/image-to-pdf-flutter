@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //Image.asset("assets/truck90.jpg", height: 70, width: 70, fit:  BoxFit.contain,),
 
                     SizedBox(height: 50,),
-                    Image.asset("assets/1.png", height: 200, width: 600, fit: BoxFit.cover,),
+                    Image.asset("assets/1.png", height: 200, width: 900, fit: BoxFit.cover,),
                     SizedBox(
                       width: 200,
                       child: Text(
@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               width: width/1.4,
               height: 100,
-              margin: EdgeInsets.only(top: 120, ),
+              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/8, ),
               padding: EdgeInsets.only(left: 20, right: 20),
               decoration: BoxDecoration(
                 color: appColors.white,
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          SizedBox(height: 30,),
+          SizedBox(height: MediaQuery.of(context).size.height/15,),
 
           Align(
             alignment: Alignment.bottomCenter,

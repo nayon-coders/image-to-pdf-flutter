@@ -64,7 +64,13 @@ class _ViewPdfState extends State<ViewPdf> {
         title: const Text("Preview"),
         backgroundColor: appColors.mainColors,
         actions: [
-          IconButton(
+          _isUpload ? Container(
+            margin: EdgeInsets.all(10),
+            child: CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 4,
+            ),
+          ) :IconButton(
               onPressed: (){
                 _creatPdf();
                 _savePdf();
@@ -74,13 +80,21 @@ class _ViewPdfState extends State<ViewPdf> {
                 color: appColors.white,
               )
 
-          )
+          ) 
         ],
       ),
       body: _isUpload ? Center(
-        child: CircularProgressIndicator(
-          color: Colors.green,
-          strokeWidth: 4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            CircularProgressIndicator(
+              color: Colors.green,
+              strokeWidth: 4,
+            ),
+            SizedBox(height: 10,),
+            Text("Processing..."),
+          ],
         ),
       ): Center(
         child: _isSendedMail && widget.image != null  ?  Container(
@@ -248,8 +262,8 @@ class _ViewPdfState extends State<ViewPdf> {
       _isUpload = true;
       _isSendedMail = true;
     });
-    String username = 'nami918772@gmail.com';
-    String password = 'jrtkrfqjsafizlqq';
+    String username = 'truck90llc@gmail.com';
+    String password = 'dteqbznuhsblrzuw';
 
     final smtpServer = gmail(username, password);
 
@@ -276,6 +290,14 @@ class _ViewPdfState extends State<ViewPdf> {
           }
       );
     } on MailerException catch (e) {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.warning,
+          text: "Somethings went wearing.",
+          onConfirmBtnTap: (){
+            Navigator.pop(context);
+          }
+      );
       print('Message not sent.$e');
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');

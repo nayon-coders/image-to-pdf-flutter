@@ -26,7 +26,7 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   void initState(){
     super.initState();
-    _Cemail.text = "nami@gmail.com";
+    _Cemail.text = "truck90llc@gmail.com";
   }
 
 
